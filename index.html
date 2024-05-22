@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmer's Toolbox</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Programmer's Toolbox</h1>
+        <div class="tabs is-centered">
+          <ul>
+            <li class="is-active"><a id="snippets-tab">Code Snippets</a></li>
+            <li><a id="news-tab">Tech News</a></li>
+            <li><a id="docs-tab">Documentation Search</a></li>
+            <li><a id="favorites-tab">Favorites</a></li>
+          </ul>
+        </div>
+        <div id="content">
+          <!-- Code Snippets Content -->
+          <div id="snippets-content">
+            <div class="field">
+              <label class="label">Search Code Snippets</label>
+              <div class="control">
+                <input id="snippet-search" class="input" type="text" placeholder="Enter keyword">
+              </div>
+              <button id="snippet-search-btn" class="button is-link">Search</button>
+            </div>
+            <div id="snippets-result" class="content">
+              <!-- Snippet results will be displayed here -->
+            </div>
+          </div>
+          <!-- Tech News Content -->
+          <div id="news-content" class="is-hidden">
+            <div id="news-result" class="content">
+              <!-- News articles will be displayed here -->
+            </div>
+          </div>
+          <!-- Documentation Search Content -->
+          <div id="docs-content" class="is-hidden">
+            <div class="field">
+              <label class="label">Search Documentation</label>
+              <div class="control">
+                <input id="docs-search" class="input" type="text" placeholder="Enter keyword">
+              </div>
+              <button id="docs-search-btn" class="button is-link">Search</button>
+            </div>
+            <div id="docs-result" class="content">
+              <!-- Documentation results will be displayed here -->
+            </div>
+          </div>
+          <!-- Favorites Content -->
+          <div id="favorites-content" class="is-hidden">
+            <h2 class="title">Favorites</h2>
+            <div id="favorites-result" class="content">
+              <!-- Favorite snippets will be displayed here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Modal for detailed information -->
+    <div class="modal" id="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title" id="modal-title"></p>
+          <button class="delete" aria-label="close" id="modal-close"></button>
+        </header>
+        <section class="modal-card-body" id="modal-body">
+          <!-- Content will be injected here -->
+        </section>
+      </div>
+    </div>
+    <script src="scripts.js"></script>
+  </body>
+</html>
