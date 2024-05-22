@@ -13,7 +13,3 @@ body {
 .modal-card-body {
   white-space: pre-wrap;
 }
-
-.is-hidden {
-  display: none;
-}
