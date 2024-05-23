@@ -13,30 +13,57 @@
       <h1 class="title has-text-centered">Programmer's Toolbox</h1>
       <div class="tabs is-centered">
         <ul>
-          <li class="is-active"><a id="newsnippets-tab">Code Snippets</a></li>
-          <li><a id="news-tab">Tech News</a></li>
+          <li class="is-active"><a id="news-tab">Tech News</a></li>
+          <li><a id="snippets-tab">Code Snippets</a></li>
           <li><a id="docs-tab">Documentation Search</a></li>
           <li><a id="favorites-tab">Favorites</a></li>
         </ul>
       </div>
       <div id="content">
+        <!-- Tech News Content -->
+        <div id="news-content">
+          <div id="news-result" class="content">
+            <!-- News articles will be displayed here -->
+          </div>
+        </div>
         <!-- Code Snippets Content -->
-        <div id="snippets-content">
+        <div id="snippets-content" class="is-hidden">
           <div class="field">
             <label class="label">Search Code Snippets</label>
             <div class="control">
               <input id="snippet-search" class="input" type="text" placeholder="Enter keyword">
             </div>
+            <div class="control">
+              <div class="select">
+                <select id="language-select">
+                  <option value="">All Languages</option>
+                  <option value="HTML">HTML</option>
+                  <option value="CSS">CSS</option>
+                  <option value="JavaScript">JavaScript</option>
+                  <option value="JSON">JSON</option>
+                  <option value="C">C</option>
+                  <option value="C++">C++</option>
+                  <option value="C#">C#</option>
+                  <option value="Go">Go</option>
+                  <option value="Python">Python</option>
+                  <option value="Java">Java</option>
+                  <option value="Objective-C">Objective-C</option>
+                  <option value="Markdown">Markdown</option>
+                  <option value="Perl">Perl</option>
+                  <option value="PHP">PHP</option>
+                  <option value="Ruby">Ruby</option>
+                  <option value="Rust">Rust</option>
+                  <option value="SQL">SQL</option>
+                  <option value="Swift">Swift</option>
+                  <option value="TypeScript">TypeScript</option>
+                  <option value="XML">XML</option>
+                </select>
+              </div>
+            </div>
             <button id="snippet-search-btn" class="button is-link">Search</button>
           </div>
           <div id="snippets-result" class="content">
             <!-- Snippet results will be displayed here -->
-          </div>
-        </div>
-        <!-- Tech News Content -->
-        <div id="news-content" class="is-hidden">
-          <div id="news-result" class="content">
-            <!-- News articles will be displayed here -->
           </div>
         </div>
         <!-- Documentation Search Content -->

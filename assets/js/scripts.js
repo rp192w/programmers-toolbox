@@ -2,16 +2,16 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Define references to the tabs in the DOM
   const tabs = {
-    snippets: document.getElementById('snippets-tab'),
     news: document.getElementById('news-tab'),
+    snippets: document.getElementById('snippets-tab'),
     docs: document.getElementById('docs-tab'),
     favorites: document.getElementById('favorites-tab')
   };
 
   // Define references to the content sections in the DOM
   const contents = {
-    snippets: document.getElementById('snippets-content'),
     news: document.getElementById('news-content'),
+    snippets: document.getElementById('snippets-content'),
     docs: document.getElementById('docs-content'),
     favorites: document.getElementById('favorites-content')
   };
@@ -46,7 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Add click event listeners to the search buttons
-  searchButtons.snippets.addEventListener('click', () => fetchSnippets(document.getElementById('snippet-search').value));
+  searchButtons.snippets.addEventListener('click', () => {
+    const query = document.getElementById('snippet-search').value;
+    const language = document.getElementById('language-select').value;
+    fetchSnippets(query, language);
+  });
   searchButtons.docs.addEventListener('click', () => fetchDocs(document.getElementById('docs-search').value));
 
   // Add click event listener to the modal close button
@@ -66,10 +70,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Function to fetch snippets from the GitHub API
-  function fetchSnippets(query) {
-    fetch(`https://api.github.com/gists/public?q=${query}`)
+  function fetchSnippets(query, language) {
+    let url = `https://api.github.com/gists/public?q=${query}`;
+    if (language) {
+      url += `+language:${language}`;
+    }
+    fetch(url)
       .then(response => response.json())
-      .then(data => updateResults('snippets', data, formatGist));
+      .then(data => {
+        const filteredData = language ? data.filter(gist => Object.values(gist.files).some(file => file.language === language)) : data;
+        updateResults('snippets', filteredData, formatGist);
+      });
   }
 
   // Function to fetch details of a specific gist from the GitHub API
@@ -93,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Function to fetch docs from the Google Custom Search API
   function fetchDocs(query) {
-    fetch(`https://www.googleapis.com/customsearch/v1?key=AIzaSyBee8zSsPxlQcm79apDe1eVEMiwx4AFkNk&cx=103b56957fcc64424&q=${query}+site%3Adeveloper.mozilla.org`)
+    fetch(`https://www.googleapis.com/customsearch/v1?key=AIzaSyBee8zSsPxlQcm79apDe1eVEMiwx4AFkNk&cx=103b56957fcc64424&q=${query}+site%3Adeveloper.mozilla.org`)      
       .then(response => response.json())
       .then(data => updateResults('docs', data.items, formatDoc));
   }
@@ -103,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return `
       <div class="box">
         <h3 class="title is-5">${gist.description || 'No description'}</h3>
+        <p>Files: ${Object.keys(gist.files).join(', ')}</p>
         <button class="button is-small is-link view-details" data-id="${gist.id}">View Details</button>
         <button class="button is-small is-info save-favorite" data-id="${gist.id}" data-desc="${gist.description || 'No description'}" data-type="snippet">Save to Favorites</button>
       </div>
@@ -155,23 +167,23 @@ document.addEventListener('DOMContentLoaded', () => {
     alert('Saved to favorites!');
   }
 
-// Function to show the saved favorites
-function showFavorites() {
-  const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-  const snippetsFavoritesList = favorites.filter(fav => fav.type === 'snippet');
-  const articlesFavoritesList = favorites.filter(fav => fav.type === 'article');
-  const docsFavoritesList = favorites.filter(fav => fav.type === 'doc');
+  // Function to show the saved favorites
+  function showFavorites() {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const snippetsFavoritesList = favorites.filter(fav => fav.type === 'snippet');
+    const articlesFavoritesList = favorites.filter(fav => fav.type === 'article');
+    const docsFavoritesList = favorites.filter(fav => fav.type === 'doc');
 
-  // Update the favorites sections with the saved favorites
-  results.snippetsFavorites.innerHTML = `<h3>Favorite Snippets</h3>${snippetsFavoritesList.length ? snippetsFavoritesList.map(formatFavorite).join('') : '<p>No favorite snippets saved yet.</p>'}`;
-  results.articlesFavorites.innerHTML = `<h3>Favorite Articles</h3>${articlesFavoritesList.length ? articlesFavoritesList.map(formatFavorite).join('') : '<p>No favorite articles saved yet.</p>'}`;
-  results.docsFavorites.innerHTML = `<h3>Favorite Docs</h3>${docsFavoritesList.length ? docsFavoritesList.map(formatFavorite).join('') : '<p>No favorite docs saved yet.</p>'}`;
+    // Update the favorites sections with the saved favorites
+    results.snippetsFavorites.innerHTML = `<h3>Favorite Snippets</h3>${snippetsFavoritesList.length ? snippetsFavoritesList.map(formatFavorite).join('') : '<p>No favorite snippets saved yet.</p>'}`;
+    results.articlesFavorites.innerHTML = `<h3>Favorite Articles</h3>${articlesFavoritesList.length ? articlesFavoritesList.map(formatFavorite).join('') : '<p>No favorite articles saved yet.</p>'}`;
+    results.docsFavorites.innerHTML = `<h3>Favorite Docs</h3>${docsFavoritesList.length ? docsFavoritesList.map(formatFavorite).join('') : '<p>No favorite docs saved yet.</p>'}`;
 
-  // Add click event listeners to the 'remove-favorite' buttons
-  document.querySelectorAll('.remove-favorite').forEach(button => {
-    button.addEventListener('click', event => removeFavorite(event.target.dataset.index));
-  });
-}
+    // Add click event listeners to the 'remove-favorite' buttons
+    document.querySelectorAll('.remove-favorite').forEach(button => {
+      button.addEventListener('click', event => removeFavorite(event.target.dataset.index));
+    });
+  }
 
   // Function to format a favorite for display
   function formatFavorite(fav, index) {
@@ -191,4 +203,7 @@ function showFavorites() {
     localStorage.setItem('favorites', JSON.stringify(favorites));
     showFavorites();
   }
+
+  // Initially activate the 'news' tab
+  switchTab('news');
 });
