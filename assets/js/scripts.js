@@ -71,15 +71,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Function to fetch snippets from the GitHub API
   function fetchSnippets(query, language) {
-    let url = `https://api.github.com/gists/public?q=${query}`;
-    if (language) {
+    let url = `https://api.github.com/search/code?q=${query}+in:file`;
+    if (language && language !== 'All') {
       url += `+language:${language}`;
     }
-    fetch(url)
-      .then(response => response.json())
+    const token = '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'; // Replace with your actual token
+
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `token ${token}`
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(`Network response was not ok: ${response.statusText}`);
+        }
+      })
       .then(data => {
-        const filteredData = language ? data.filter(gist => Object.values(gist.files).some(file => file.language === language)) : data;
-        updateResults('snippets', filteredData, formatGist);
+        console.log('Fetch Snippets Data:', data);
+        if (data.items && Array.isArray(data.items) && data.items.length > 0) {
+          updateResults('snippets', data.items, formatGist);
+        } else {
+          console.error('No data items found in response or data.items is not an array');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
       });
   }
 
@@ -110,13 +130,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Function to format a gist for display
-  function formatGist(gist) {
+  function formatGist(item) {
+    const repo = item.repository;
     return `
       <div class="box">
-        <h3 class="title is-5">${gist.description || 'No description'}</h3>
-        <p>Files: ${Object.keys(gist.files).join(', ')}</p>
-        <button class="button is-small is-link view-details" data-id="${gist.id}">View Details</button>
-        <button class="button is-small is-info save-favorite" data-id="${gist.id}" data-desc="${gist.description || 'No description'}" data-type="snippet">Save to Favorites</button>
+        <h3 class="title is-5">${item.name || 'No name'}</h3>
+        <p>Path: ${item.path}</p>
+        <p>Repository: <a href="${repo.html_url}" target="_blank">${repo.full_name}</a></p>
+        <p>Description: ${repo.description || 'No description'}</p>
+        <a href="${item.html_url}" target="_blank" class="button is-small is-link">View File</a>
+        <button class="button is-small is-info save-favorite" data-id="${item.html_url}" data-desc="${item.name}" data-type="snippet">Save to Favorites</button>
       </div>
     `;
   }
@@ -147,6 +170,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Function to update the results section with the fetched data
   function updateResults(type, data, formatter) {
+    if (!data || !Array.isArray(data) || data.length === 0) {
+      console.error(`No valid data to display for ${type}`);
+      return;
+    }
     // Update the results section with the formatted data
     results[type].innerHTML = data.map(formatter).join('');
     // Add click event listeners to the 'view-details' buttons
