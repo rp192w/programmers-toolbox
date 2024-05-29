@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (language && language !== 'All') {
       url += `+language:${language}`;
     }
-    const token = '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';
+    const token = process.env.API_KEY;
 
     fetch(url, {
       method: 'GET',
