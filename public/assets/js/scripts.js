@@ -1,4 +1,3 @@
-// Wait until the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
   // Define references to the tabs in the DOM
   const tabs = {
@@ -123,20 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Function to fetch snippets from the GitHub API
+  // Function to fetch snippets from the server
   function fetchSnippets(query, language) {
-    let url = `https://api.github.com/search/code?q=${query}+in:file`;
-    if (language && language !== 'All') {
-      url += `+language:${language}`;
-    }
-    const token = process.env.API_KEY;
+    const url = `/api/snippets?query=${encodeURIComponent(query)}&language=${encodeURIComponent(language)}`;
 
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Authorization': `token ${token}`
-      }
-    })
+    fetch(url)
       .then(response => {
         if (response.ok) {
           return response.json();
