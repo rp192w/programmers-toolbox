@@ -58,16 +58,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Function to switch tabs
   function switchTab(activeTab) {
-    // For each tab, toggle the 'is-active' class on the parent element and the 'is-hidden' class on the content
     Object.keys(tabs).forEach(tab => {
       tabs[tab].parentElement.classList.toggle('is-active', tab === activeTab);
       contents[tab].classList.toggle('is-hidden', tab !== activeTab);
     });
-    // If the 'news' tab is active, fetch news
     if (activeTab === 'news') fetchNews();
-    // If the 'favorites' tab is active, show favorites
     if (activeTab === 'favorites') showFavorites();
   }
+
+  // Autocomplete function
+  function fetchAutocompleteSuggestions(query, callback) {
+    fetch(`https://api.datamuse.com/sug?s=${query}`)
+      .then(response => response.json())
+      .then(data => {
+        callback(data);
+      })
+      .catch(error => {
+        console.error('Error fetching autocomplete suggestions:', error);
+        callback([]);
+      });
+  }
+
+  // Function to render autocomplete suggestions
+  function renderAutocompleteSuggestions(container, suggestions) {
+    container.innerHTML = '';
+    suggestions.forEach(suggestion => {
+      const suggestionEl = document.createElement('div');
+      suggestionEl.classList.add('autocomplete-suggestion');
+      suggestionEl.textContent = suggestion.word;
+      suggestionEl.addEventListener('click', () => {
+        const input = container.previousElementSibling;
+        input.value = suggestion.word;
+        container.innerHTML = '';
+      });
+      container.appendChild(suggestionEl);
+    });
+  }
+
+  // Handle input events for the snippet search input
+  const snippetSearchInput = document.getElementById('snippet-search');
+  const snippetAutocompleteContainer = document.getElementById('snippet-autocomplete');
+  snippetSearchInput.addEventListener('input', () => {
+    const query = snippetSearchInput.value;
+    if (query.length > 2) {
+      fetchAutocompleteSuggestions(query, suggestions => {
+        renderAutocompleteSuggestions(snippetAutocompleteContainer, suggestions);
+      });
+    } else {
+      snippetAutocompleteContainer.innerHTML = '';
+    }
+  });
+
+  // Handle input events for the docs search input
+  const docsSearchInput = document.getElementById('docs-search');
+  const docsAutocompleteContainer = document.getElementById('docs-autocomplete');
+  docsSearchInput.addEventListener('input', () => {
+    const query = docsSearchInput.value;
+    if (query.length > 2) {
+      fetchAutocompleteSuggestions(query, suggestions => {
+        renderAutocompleteSuggestions(docsAutocompleteContainer, suggestions);
+      });
+    } else {
+      docsAutocompleteContainer.innerHTML = '';
+    }
+  });
 
   // Function to fetch snippets from the GitHub API
   function fetchSnippets(query, language) {
@@ -75,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (language && language !== 'All') {
       url += `+language:${language}`;
     }
-    const token = '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'; // Replace with your actual token
+    const token = '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';
 
     fetch(url, {
       method: 'GET',
@@ -108,7 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch(`https://api.github.com/gists/${id}`)
       .then(response => response.json())
       .then(data => {
-        // Update the modal with the gist details and show it
         modal.title.innerText = data.description || 'No description';
         modal.body.innerHTML = Object.values(data.files).map(file => `<pre>${file.content}</pre>`).join('');
         modal.container.classList.add('is-active');
@@ -174,13 +227,10 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error(`No valid data to display for ${type}`);
       return;
     }
-    // Update the results section with the formatted data
     results[type].innerHTML = data.map(formatter).join('');
-    // Add click event listeners to the 'view-details' buttons
     document.querySelectorAll('.view-details').forEach(button => {
       button.addEventListener('click', event => fetchGistDetails(event.target.dataset.id));
     });
-    // Add click event listeners to the 'save-favorite' buttons
     document.querySelectorAll('.save-favorite').forEach(button => {
       button.addEventListener('click', event => saveFavorite(event.target.dataset.id, event.target.dataset.desc, event.target.dataset.type));
     });
