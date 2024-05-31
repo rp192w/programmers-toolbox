@@ -21,11 +21,11 @@ This repository hosts the code for the Programmer's Toolbox application, a versa
 
 ### CSS Files
 
-- **./assets/css/styles.css**: General styles for the Programmer's Toolbox application, including styles for tabs, content sections, and modals.
+- **./public/assets/css/styles.css**: General styles for the Programmer's Toolbox application, including styles for tabs, content sections, and modals.
 
 ### JavaScript Files
 
-- **./assets/js/scripts.js**: Contains JavaScript code for handling tab navigation, fetching data from APIs (dev.to, GitHub Gists, MDN Web Docs), managing localStorage for favorites, and displaying content dynamically.
+- **./public/assets/js/scripts.js**: Contains JavaScript code for handling tab navigation, fetching data from APIs (dev.to, GitHub Gists, MDN Web Docs), managing localStorage for favorites, and displaying content dynamically.
 
 ## Setup and Running
 
