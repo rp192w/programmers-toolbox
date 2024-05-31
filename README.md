@@ -2,7 +2,7 @@
 
 ## Link to Deployed App
 
-[Programmer's Toolbox](https://rp192w.github.io/programmers-toolbox/)
+[Programmer's Toolbox](https://programmers-toolbox.up.railway.app/)
 
 ## Overview
 
@@ -28,13 +28,14 @@ This repository hosts the code for the Programmer's Toolbox application, a versa
 - **./assets/js/scripts.js**: Contains JavaScript code for handling tab navigation, fetching data from APIs (dev.to, GitHub Gists, MDN Web Docs), managing localStorage for favorites, and displaying content dynamically.
 
 ## Setup and Running
-This package REQUIRES node.js, it can be downloaded here: https://nodejs.org/en
 
-To run the application on a local host first you need to cloan the repo, then in visual studio or visual studio code open the bash terminal and run "npm i" without quotes to install dependancies.
+This package REQUIRES [node.js](https://nodejs.org/en)
+
+To run the application on a local host first you need to clone the repo, then in visual studio or visual studio code open the bash terminal and run "npm i" without quotes to install dependencies.
 To enable github features like code snippets and search functionality, you must create a .env file in the project root folder and add this line: "API_KEY=key" without quotes, then go to your github developer settings and create an API key with full scope permissions.
 To enable google API features you first need to add a new line to your .env file and add a google API key "GOOGLE_API_KEY=key" without quotes, key being your google API key (google programmable search API key).
-after your keys are setup and you have the dependancies installed, run node "server.js" without quotes in your bash terminal, this will run the backend and will secure your API keys.
-Then go to https://localhost:3001
+after your keys are setup and you have the dependencies installed, run node "server.js" without quotes in your bash terminal, this will run the backend and will secure your API keys.
+Then go to [https://localhost:3001](https://localhost:3001)
 
 ## Features
 
@@ -67,7 +68,11 @@ Then go to https://localhost:3001
 
 ## Screenshots
 
-![Programmer's Toolbox Screenshot](./assets/images/screenshot.png)
+| Tech News | Snippets |
+|:---------:|:--------:|
+| ![Tech News Screenshot](./public/assets/images/TechNews.png) | ![Snippets Screenshot](./public/assets/images/Snippets.png) |
+| Document Search | Favorites |
+| ![Document Search Screenshot](./public/assets/images/DocSearch.png) | ![Favorites Screenshot](./public/assets/images/Favorites.png) |
 
 ---
 
