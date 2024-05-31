@@ -21,15 +21,20 @@ This repository hosts the code for the Programmer's Toolbox application, a versa
 
 ### CSS Files
 
-- **assets/css/styles.css**: General styles for the Programmer's Toolbox application, including styles for tabs, content sections, and modals.
+- **./assets/css/styles.css**: General styles for the Programmer's Toolbox application, including styles for tabs, content sections, and modals.
 
 ### JavaScript Files
 
-- **assets/js/scripts.js**: Contains JavaScript code for handling tab navigation, fetching data from APIs (dev.to, GitHub Gists, MDN Web Docs), managing localStorage for favorites, and displaying content dynamically.
+- **./assets/js/scripts.js**: Contains JavaScript code for handling tab navigation, fetching data from APIs (dev.to, GitHub Gists, MDN Web Docs), managing localStorage for favorites, and displaying content dynamically.
 
 ## Setup and Running
+This package REQUIRES node.js, it can be downloaded here: https://nodejs.org/en
 
-To run the application, go to the provided URL or clone the repo and open `index.html` in a web browser. Ensure your browser supports localStorage, which is required to save favorites.
+To run the application on a local host first you need to cloan the repo, then in visual studio or visual studio code open the bash terminal and run "npm i" without quotes to install dependancies.
+To enable github features like code snippets and search functionality, you must create a .env file in the project root folder and add this line: "API_KEY=key" without quotes, then go to your github developer settings and create an API key with full scope permissions.
+To enable google API features you first need to add a new line to your .env file and add a google API key "GOOGLE_API_KEY=key" without quotes, key being your google API key (google programmable search API key).
+after your keys are setup and you have the dependancies installed, run node "server.js" without quotes in your bash terminal, this will run the backend and will secure your API keys.
+Then go to https://localhost:3001
 
 ## Features
 
