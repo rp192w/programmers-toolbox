@@ -67,7 +67,11 @@ Then go to https://localhost:3001
 
 ## Screenshots
 
-![Programmer's Toolbox Screenshot](./assets/images/screenshot.png)
+| Tech News | Snippets |
+|:---------:|:--------:|
+| ![Tech News Screenshot](./public/assets/images/TechNews.png) | ![Snippets Screenshot](./public/assets/images/Snippets.png) |
+| Document Search | Favorites |
+| ![Document Search Screenshot](./public/assets/images/DocSearch.png) | ![Favorites Screenshot](./public/assets/images/Favorites.png) |
 
 ---
 
