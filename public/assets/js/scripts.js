@@ -165,9 +165,9 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(data => updateResults('news', data, formatArticle));
   }
 
-  // Function to fetch docs from the Google Custom Search API
+  // Function to fetch docs from the server
   function fetchDocs(query) {
-    fetch(`https://www.googleapis.com/customsearch/v1?key=AIzaSyBee8zSsPxlQcm79apDe1eVEMiwx4AFkNk&cx=103b56957fcc64424&q=${query}+site%3Adeveloper.mozilla.org`)      
+    fetch(`/api/docs?query=${encodeURIComponent(query)}`)
       .then(response => response.json())
       .then(data => updateResults('docs', data.items, formatDoc));
   }
